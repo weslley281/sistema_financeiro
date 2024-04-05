@@ -1,6 +1,6 @@
 <?php
-
-require_once '../models/DepositModel.php';
+echo "Eu estou aqui<br>";
+require_once './models/DepositModel.php';
 
 class DepositController {
     public function register() {

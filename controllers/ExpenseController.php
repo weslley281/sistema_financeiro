@@ -1,6 +1,6 @@
 <?php
 
-require_once '../models/ExpenseModel.php';
+require_once './models/ExpenseModel.php';
 
 class ExpenseController {
     public function register() {

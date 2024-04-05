@@ -1,6 +1,6 @@
 <?php
-
-require_once '../config.php';
+echo "Também estou aqui<br>";
+require_once './config.php';
 
 class DepositModel {
     private $conn;

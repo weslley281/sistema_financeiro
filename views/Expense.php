@@ -1,5 +1,8 @@
+<?php 
+require_once './controllers/ExpenseController.php';
+ ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,7 +28,10 @@
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($expenses as $expense): ?>
+            <?php
+            if (isset($expenses) && !empty($expenses)) {
+                foreach ($expenses as $expense){
+            ?>
             <tr>
                 <td><?php echo $expense['id']; ?></td>
                 <td><?php echo $expense['amount']; ?></td>
@@ -40,7 +46,13 @@
                     <?php endif; ?>
                 </td>
             </tr>
-            <?php endforeach; ?>
+            <?php
+                }
+            }else {
+                // Se não houver depósitos disponíveis, exibir uma mensagem alternativa
+                echo "<tr><td colspan='5'>Nenhum depósito encontrado.</td></tr>";
+            }
+            ?>
         </tbody>
     </table>
 </div>
