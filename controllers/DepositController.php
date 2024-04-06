@@ -11,38 +11,33 @@ class DepositController {
                 $depositDate = $_POST["deposit_date"];
                 $managerId = $_POST["manager_id"];
                 
-                // Lidar com o upload da imagem do comprovante de depósito
-                $directoryUpload = "../img/";
-                $imageName = uniqid() . $_FILES["receipt_image"]["name"];
-                $pathImage = $directoryUpload . $imageName;
-                $extensionImage = strtolower(pathinfo($pathImage, PATHINFO_EXTENSION));
+            // Lidar com o upload da imagem do comprovante de depósito
+            $diretorioUpload = "img/";
+            $nomeImagem = uniqid() . $_FILES["receipt_image"]["name"];
+            $caminho = $diretorioUpload . $nomeImagem;
+            $extensaoImagem = strtolower(pathinfo($caminho, PATHINFO_EXTENSION));
 
-                if (!in_array($extensionImage, ["jpg", "jpeg", "gif", "png"])) {
-                    //exibirMensagemEredirecionar("Invalid image format", '../views/admin.php?pagina=cursos');
-                    echo "Invalid image format";
-                    exit();
-                }
-                
-                var_dump($imageName);
-                var_dump($extensionImage);
-                $envio = move_uploaded_file($_FILES["receipt_image"]["tmp_name"], $pathImage);
-                var_dump($envio);
-                //if(move_uploaded_file($_FILES["receipt_image"]["tmp_name"], $pathImage)){
-                    if (!$pathImage) {
+            if (!in_array($extensaoImagem, ["jpg", "jpeg", "gif", "png"])) {
+                //exibirMensagemEredirecionar("Formato de imagem inválido", '../views/admin.php?pagina=cursos');
+                exit();
+            }
+
+            if (move_uploaded_file($_FILES["receipt_image"]["tmp_name"], $caminho)) {
+                    if (!$caminho) {
                         echo "Erro ao fazer upload da imagem do comprovante.";
                         return;
                     }
 
                     $depositModel = new DepositModel();
-                    $result = $depositModel->createDeposit($amount, $depositDate, $managerId, $pathImage);
+                    $result = $depositModel->createDeposit($amount, $depositDate, $managerId, $caminho);
                     if ($result) {
                         echo "Depósito registrado com sucesso.";
                     } else {
                         echo "Erro ao registrar o depósito.";
                     }
-                //}else{
-                    //echo "Erro ao salvar imagem";
-                //}
+                }else{
+                    echo "Erro ao salvar imagem";
+                }
                 
             } else {
                 echo "Todos os campos do formulário são obrigatórios.";
