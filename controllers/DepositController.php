@@ -1,5 +1,5 @@
 <?php
-echo "Eu estou aqui<br>";
+//echo "Eu estou aqui<br>";
 require_once './models/DepositModel.php';
 
 class DepositController {
@@ -12,32 +12,52 @@ class DepositController {
                 $managerId = $_POST["manager_id"];
                 
                 // Lidar com o upload da imagem do comprovante de depósito
-                $receiptImage = $this->uploadReceiptImage($_FILES["receipt_image"]);
-                if (!$receiptImage) {
-                    echo "Erro ao fazer upload da imagem do comprovante.";
-                    return;
-                }
+                $directoryUpload = "../img/";
+                $imageName = uniqid() . $_FILES["receipt_image"]["name"];
+                $pathImage = $directoryUpload . $imageName;
+                $extensionImage = strtolower(pathinfo($pathImage, PATHINFO_EXTENSION));
 
-                $depositModel = new DepositModel();
-                $result = $depositModel->createDeposit($amount, $depositDate, $managerId, $receiptImage);
-                if ($result) {
-                    echo "Depósito registrado com sucesso.";
-                } else {
-                    echo "Erro ao registrar o depósito.";
+                if (!in_array($extensionImage, ["jpg", "jpeg", "gif", "png"])) {
+                    //exibirMensagemEredirecionar("Invalid image format", '../views/admin.php?pagina=cursos');
+                    echo "Invalid image format";
+                    exit();
                 }
+                
+                var_dump($imageName);
+                var_dump($extensionImage);
+                $envio = move_uploaded_file($_FILES["receipt_image"]["tmp_name"], $pathImage);
+                var_dump($envio);
+                //if(move_uploaded_file($_FILES["receipt_image"]["tmp_name"], $pathImage)){
+                    if (!$pathImage) {
+                        echo "Erro ao fazer upload da imagem do comprovante.";
+                        return;
+                    }
+
+                    $depositModel = new DepositModel();
+                    $result = $depositModel->createDeposit($amount, $depositDate, $managerId, $pathImage);
+                    if ($result) {
+                        echo "Depósito registrado com sucesso.";
+                    } else {
+                        echo "Erro ao registrar o depósito.";
+                    }
+                //}else{
+                    //echo "Erro ao salvar imagem";
+                //}
+                
             } else {
                 echo "Todos os campos do formulário são obrigatórios.";
             }
         } else {
             // Exibir formulário para registrar um novo depósito
-            include '../views/deposit/register.php';
+            //include '../views/deposit/register.php';
+            echo "algo não está certo";
         }
     }
 
     public function list() {
         $depositModel = new DepositModel();
         $deposits = $depositModel->getAllDeposits();
-        include '../views/deposit/list.php';
+        //include '../views/deposit/list.php';
     }
 
     // Método para lidar com o upload da imagem do comprovante de depósito
