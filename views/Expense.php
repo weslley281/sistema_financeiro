@@ -6,13 +6,13 @@ require_once './controllers/ExpenseController.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Expense List</title>
+    <title>Lista de Despesas</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
 <div class="container mt-5">
-    <h2 class="mb-4">Expense List</h2>
+    <h2 class="mb-4">Lista de Despesas</h2>
 
     <a href="index.php?action=registerExpense" class="btn btn-primary mb-4">Add Expense</a>
 
@@ -20,27 +20,28 @@ require_once './controllers/ExpenseController.php';
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Amount</th>
-                <th>Date</th>
-                <th>Description</th>
-                <th>Payment Method</th>
-                <th>Receipt Image</th>
+                <th>Quantia</th>
+                <th>Data</th>
+                <th>Descrição</th>
+                <th>Manager ID</th>
+                <th>Imagem do recibo</th>
             </tr>
         </thead>
         <tbody>
             <?php
+            $expenses = ExpenseController::list();
             if (isset($expenses) && !empty($expenses)) {
                 foreach ($expenses as $expense){
             ?>
             <tr>
-                <td><?php echo $expense['id']; ?></td>
+                <td><?php echo $expense['id_expense']; ?></td>
                 <td><?php echo $expense['amount']; ?></td>
                 <td><?php echo $expense['expense_date']; ?></td>
                 <td><?php echo $expense['description']; ?></td>
-                <td><?php echo $expense['payment_method']; ?></td>
+                <td><?php echo $expense['manager_id']; ?></td>
                 <td>
                     <?php if (!empty($expense['receipt_image'])): ?>
-                        <img src="../uploads/<?php echo $expense['receipt_image']; ?>" alt="Receipt" style="max-width: 100px;">
+                        <img src="<?php echo $deposit['receipt_image']; ?>" alt="Receipt" style="max-width: 100px;">
                     <?php else: ?>
                         N/A
                     <?php endif; ?>

@@ -4,7 +4,7 @@ require_once './controllers/DepositController.php';
  ?>
 
 <div class="container mt-5">
-    <h2 class="mb-4">Deposit List</h2>
+    <h2 class="mb-4">Lista de Depósitos</h2>
 
     <a href="#" class="btn btn-primary mb-4" data-toggle="modal" data-target="#addDepositModal">Adicionar Depósito</a>
 
@@ -20,17 +20,18 @@ require_once './controllers/DepositController.php';
         </thead>
         <tbody>
             <?php
+            $deposits = DepositController::list();
             if (isset($deposits) && !empty($deposits)) {
                 foreach ($deposits as $deposit){
                 ?>
                 <tr>
-                    <td><?php echo $deposit['id']; ?></td>
+                    <td><?php echo $deposit['id_deposit']; ?></td>
                     <td><?php echo $deposit['amount']; ?></td>
                     <td><?php echo $deposit['deposit_date']; ?></td>
                     <td><?php echo $deposit['manager_id']; ?></td>
                     <td>
                         <?php if (!empty($deposit['receipt_image'])): ?>
-                            <img src="../uploads/<?php echo $deposit['receipt_image']; ?>" alt="Receipt" style="max-width: 100px;">
+                            <img src="<?php echo $deposit['receipt_image']; ?>" alt="Receipt" style="max-width: 100px;">
                         <?php else: ?>
                             N/A
                         <?php endif; ?>
@@ -52,7 +53,7 @@ require_once './controllers/DepositController.php';
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="addDepositModalLabel">Add Deposit</h5>
+        <h5 class="modal-title" id="addDepositModalLabel">Adicionar Depósito</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>

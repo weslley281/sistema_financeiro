@@ -11,25 +11,26 @@ class DepositController {
                 $depositDate = $_POST["deposit_date"];
                 $managerId = $_POST["manager_id"];
                 
-            // Lidar com o upload da imagem do comprovante de depósito
-            $diretorioUpload = "img/";
-            $nomeImagem = uniqid() . $_FILES["receipt_image"]["name"];
-            $caminho = $diretorioUpload . $nomeImagem;
-            $extensaoImagem = strtolower(pathinfo($caminho, PATHINFO_EXTENSION));
+                // Lidar com o upload da imagem do comprovante de depósito
+                $directoryUpload = "img/";
+                $imageName = uniqid() . $_FILES["receipt_image"]["name"];
+                $pathImage = $directoryUpload . $imageName;
+                $extentionImage = strtolower(pathinfo($pathImage, PATHINFO_EXTENSION));
 
-            if (!in_array($extensaoImagem, ["jpg", "jpeg", "gif", "png"])) {
-                //exibirMensagemEredirecionar("Formato de imagem inválido", '../views/admin.php?pagina=cursos');
-                exit();
-            }
+                if (!in_array($extentionImage, ["jpg", "jpeg", "gif", "png"])) {
+                    echo "<script language='javascript'>window.alert('Tipo de imagem invalida'); </script>";
+                    echo "<script language='javascript'>window.location='index.php?action=listDeposits'; </script>";
+                    exit();
+                }
 
-            if (move_uploaded_file($_FILES["receipt_image"]["tmp_name"], $caminho)) {
-                    if (!$caminho) {
+                if (move_uploaded_file($_FILES["receipt_image"]["tmp_name"], $pathImage)) {
+                    if (!$pathImage) {
                         echo "Erro ao fazer upload da imagem do comprovante.";
                         return;
                     }
 
                     $depositModel = new DepositModel();
-                    $result = $depositModel->createDeposit($amount, $depositDate, $managerId, $caminho);
+                    $result = $depositModel->createDeposit($amount, $depositDate, $managerId, $pathImage);
                     if ($result) {
                         echo "Depósito registrado com sucesso.";
                     } else {
@@ -49,10 +50,10 @@ class DepositController {
         }
     }
 
-    public function list() {
+    public static function list() {
         $depositModel = new DepositModel();
         $deposits = $depositModel->getAllDeposits();
-        //include '../views/deposit/list.php';
+        return $deposits;
     }
 
     // Método para lidar com o upload da imagem do comprovante de depósito
@@ -82,21 +83,21 @@ class DepositController {
 
         // Permitir apenas determinados formatos de arquivo
         if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-        && $imageFileType != "gif" ) {
+            && $imageFileType != "gif" ) {
             $uploadOk = 0;
-        }
+    }
 
         // Se tudo estiver correto, tentar fazer upload do arquivo
-        if ($uploadOk == 1) {
-            if (move_uploaded_file($image["tmp_name"], $targetFile)) {
-                return basename($image["name"]);
-            } else {
-                return false;
-            }
+    if ($uploadOk == 1) {
+        if (move_uploaded_file($image["tmp_name"], $targetFile)) {
+            return basename($image["name"]);
         } else {
             return false;
         }
+    } else {
+        return false;
     }
+}
 }
 
 ?>

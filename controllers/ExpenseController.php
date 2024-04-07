@@ -12,33 +12,43 @@ class ExpenseController {
                 $description = $_POST["description"];
                 $paymentMethod = $_POST["payment_method"];
                 
-                // Lidar com o upload da imagem do comprovante de despesa
-                $receiptImage = $this->uploadReceiptImage($_FILES["receipt_image"]);
-                if (!$receiptImage) {
-                    echo "Erro ao fazer upload da imagem do comprovante.";
-                    return;
+                // Lidar com o upload da imagem do comprovante de depósito
+                $directoryUpload = "img/";
+                $imageName = uniqid() . $_FILES["receipt_image"]["name"];
+                $pathImage = $directoryUpload . $imageName;
+                $extentionImage = strtolower(pathinfo($pathImage, PATHINFO_EXTENSION));
+
+                if (!in_array($extentionImage, ["jpg", "jpeg", "gif", "png"])) {
+                    echo "<script language='javascript'>window.alert('Tipo de imagem invalida'); </script>";
+                    echo "<script language='javascript'>window.location='index.php?action=listDeposits'; </script>";
+                    exit();
                 }
 
-                $expenseModel = new ExpenseModel();
-                $result = $expenseModel->createExpense($amount, $expenseDate, $description, $paymentMethod, $receiptImage);
-                if ($result) {
-                    echo "Despesa registrada com sucesso.";
-                } else {
-                    echo "Erro ao registrar a despesa.";
+                if (move_uploaded_file($_FILES["receipt_image"]["tmp_name"], $pathImage)) {
+                    if (!$pathImage) {
+                        echo "Erro ao fazer upload da imagem do comprovante.";
+                        return;
+                    }
+                    $expenseModel = new ExpenseModel();
+                    $result = $expenseModel->createExpense($amount, $expenseDate, $description, $paymentMethod, $pathImage);
+                    if ($result) {
+                        echo "Despesa registrada com sucesso.";
+                    } else {
+                        echo "Erro ao registrar a despesa.";
+                    }
+                }else{
+                    echo "Erro ao salvar imagem";
                 }
             } else {
                 echo "Todos os campos do formulário são obrigatórios.";
             }
-        } else {
-            // Exibir formulário para registrar uma nova despesa
-            include '../views/expense/register.php';
         }
     }
 
-    public function list() {
+    public static function list() {
         $expenseModel = new ExpenseModel();
         $expenses = $expenseModel->getAllExpenses();
-        include '../views/expense/list.php';
+        return $expenses;
     }
 
     // Método para lidar com o upload da imagem do comprovante de despesa
@@ -68,21 +78,21 @@ class ExpenseController {
 
         // Permitir apenas determinados formatos de arquivo
         if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-        && $imageFileType != "gif" ) {
+            && $imageFileType != "gif" ) {
             $uploadOk = 0;
-        }
+    }
 
         // Se tudo estiver correto, tentar fazer upload do arquivo
-        if ($uploadOk == 1) {
-            if (move_uploaded_file($image["tmp_name"], $targetFile)) {
-                return basename($image["name"]);
-            } else {
-                return false;
-            }
+    if ($uploadOk == 1) {
+        if (move_uploaded_file($image["tmp_name"], $targetFile)) {
+            return basename($image["name"]);
         } else {
             return false;
         }
+    } else {
+        return false;
     }
+}
 }
 
 ?>
