@@ -10,6 +10,7 @@ class DepositController {
                 $amount = $_POST["amount"];
                 $depositDate = $_POST["deposit_date"];
                 $managerId = $_POST["manager_id"];
+                $descriptiom = $_POST['descriptiom'];
                 
                 // Lidar com o upload da imagem do comprovante de depósito
                 $directoryUpload = "img/";
@@ -30,7 +31,7 @@ class DepositController {
                     }
 
                     $depositModel = new DepositModel();
-                    $result = $depositModel->createDeposit($amount, $depositDate, $managerId, $pathImage);
+                    $result = $depositModel->createDeposit($descriptiom, $amount, $depositDate, $managerId, $pathImage);
                     if ($result) {
                         echo "Depósito registrado com sucesso.";
                     } else {

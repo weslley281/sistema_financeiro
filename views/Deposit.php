@@ -26,6 +26,7 @@ require_once './controllers/DepositController.php';
                 ?>
                 <tr>
                     <td><?php echo $deposit['id_deposit']; ?></td>
+                    <td><?php echo $deposit['descriptiom']; ?></td>
                     <td><?php echo $deposit['amount']; ?></td>
                     <td><?php echo $deposit['deposit_date']; ?></td>
                     <td><?php echo $deposit['manager_id']; ?></td>
@@ -66,10 +67,17 @@ require_once './controllers/DepositController.php';
             <label for="amount">Quantia</label>
             <input type="text" class="form-control" id="amount" name="amount" required>
           </div>
+          
+          <div class="form-group">
+            <label for="amount">Quantia</label>
+            <input type="text" class="form-control" id="amount" name="amount" required>
+          </div>
+
           <div class="form-group">
             <label for="deposit_date">Data do Depósito</label>
             <input type="date" class="form-control" id="deposit_date" name="deposit_date" required>
           </div>
+
           <div class="form-group">
             <label for="receipt_image">Imagem de recibo</label>
             <input type="file" class="form-control" id="receipt_image" name="receipt_image" accept="image/*" required>
