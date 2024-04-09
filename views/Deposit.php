@@ -64,8 +64,8 @@ require_once './controllers/DepositController.php';
             <input type="hidden" id="manager_id" name="manager_id" value="1">
 
           <div class="form-group">
-            <label for="amount">Quantia</label>
-            <input type="text" class="form-control" id="amount" name="amount" required>
+            <label for="descriptiom">Descrição</label>
+            <input type="text" class="form-control" id="descriptiom" name="descriptiom" required>
           </div>
           
           <div class="form-group">
