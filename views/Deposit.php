@@ -12,9 +12,9 @@ require_once './controllers/DepositController.php';
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Amount</th>
-                <th>Deposit Date</th>
-                <th>Manager ID</th>
+                <th>Descrição</th>
+                <th>Quantidade</th>
+                <th>Data do Depósito</th>
                 <th>Receipt Image</th>
             </tr>
         </thead>
@@ -29,7 +29,6 @@ require_once './controllers/DepositController.php';
                     <td><?php echo $deposit['descriptiom']; ?></td>
                     <td><?php echo $deposit['amount']; ?></td>
                     <td><?php echo $deposit['deposit_date']; ?></td>
-                    <td><?php echo $deposit['manager_id']; ?></td>
                     <td>
                         <?php if (!empty($deposit['receipt_image'])): ?>
                             <img src="<?php echo $deposit['receipt_image']; ?>" alt="Receipt" style="max-width: 100px;">
