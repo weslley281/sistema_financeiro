@@ -15,7 +15,7 @@ class ExpenseModel {
 
     // Método para registrar uma nova despesa
     public function createExpense($amount, $expenseDate, $description, $paymentMethod, $receiptImage) {
-        $stmt = $this->conn->prepare("INSERT INTO expenses (amount, expense_date, description, payment_method, receipt_image) VALUES (?, ?, ?, ?, ?)");
+        $stmt = $this->conn->prepare("INSERT INTO expences (amount, expense_date, description, payment_method, receipt_image) VALUES (?, ?, ?, ?, ?)");
         $stmt->bind_param("dssss", $amount, $expenseDate, $description, $paymentMethod, $receiptImage);
         $stmt->execute();
         return $stmt->affected_rows > 0;
@@ -23,13 +23,13 @@ class ExpenseModel {
 
     // Método para listar todas as despesas
     public function getAllExpenses() {
-        $result = $this->conn->query("SELECT * FROM expenses");
+        $result = $this->conn->query("SELECT * FROM expences");
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
     // Método para obter detalhes de uma despesa específica pelo ID
     public function getExpenseById($id) {
-        $stmt = $this->conn->prepare("SELECT * FROM expenses WHERE id = ?");
+        $stmt = $this->conn->prepare("SELECT * FROM expences WHERE id = ?");
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $result = $stmt->get_result();

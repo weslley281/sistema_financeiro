@@ -1,20 +1,12 @@
 <?php 
 require_once './controllers/ExpenseController.php';
  ?>
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Despesas</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
+
 
 <div class="container mt-5">
     <h2 class="mb-4">Lista de Despesas</h2>
 
-    <a href="index.php?action=registerExpense" class="btn btn-primary mb-4">Add Expense</a>
+    <a href="#" class="btn btn-primary mb-4" data-toggle="modal" data-target="#addExpenseModal">Adicionar Despesa</a>
 
     <table class="table">
         <thead>
@@ -41,7 +33,7 @@ require_once './controllers/ExpenseController.php';
                 <td><?php echo $expense['manager_id']; ?></td>
                 <td>
                     <?php if (!empty($expense['receipt_image'])): ?>
-                        <img src="<?php echo $deposit['receipt_image']; ?>" alt="Receipt" style="max-width: 100px;">
+                        <img src="<?php echo $expense['receipt_image']; ?>" alt="Receipt" style="max-width: 100px;">
                     <?php else: ?>
                         N/A
                     <?php endif; ?>
@@ -58,5 +50,52 @@ require_once './controllers/ExpenseController.php';
     </table>
 </div>
 
-</body>
-</html>
+<!-- Modal -->
+<div class="modal fade" id="addExpenseModal" tabindex="-1" role="dialog" aria-labelledby="addExpenseModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addExpenseModalLabel">Adicionar Depósito</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="addExpenseForm" method="post" action="process_expense.php" enctype="multipart/form-data">
+            <input type="hidden" id="manager_id" name="manager_id" value="1">
+
+          <div class="form-group">
+            <label for="descriptiom">Descrição</label>
+            <input type="text" class="form-control" id="descriptiom" name="descriptiom" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="amount">Quantia</label>
+            <input type="text" class="form-control" id="amount" name="amount" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="payment_method">Metodo de Pagamento</label>
+            <select class="form-control" name="payment_method" id="payment_method">
+                <option value="cash">Dinheiro</option>
+                <option value="deposit">Depósito</option>
+                <option value="credit">Crédito</option>
+                <option value="debit">Débito</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="expense_date">Data do Depósito</label>
+            <input type="date" class="form-control" id="expense_date" name="expense_date" required>
+          </div>
+
+          <div class="form-group">
+            <label for="receipt_image">Imagem de recibo</label>
+            <input type="file" class="form-control" id="receipt_image" name="receipt_image" accept="image/*" required>
+          </div>
+          <button type="submit" class="btn btn-success">Enviar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -16,7 +16,7 @@ class DepositModel {
     // Método para registrar um novo depósito
     public function createDeposit($descriptiom, $amount, $depositDate, $managerId, $receiptImage) {
         $stmt = $this->conn->prepare("INSERT INTO deposits (descriptiom, amount, deposit_date, manager_id, receipt_image) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssis", $descriptiom, $amount, $depositDate, $managerId, $receiptImage);
+        $stmt->bind_param("sdsis", $descriptiom, $amount, $depositDate, $managerId, $receiptImage);
         $stmt->execute();
         return $stmt->affected_rows > 0;
     }

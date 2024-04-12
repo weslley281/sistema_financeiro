@@ -87,33 +87,3 @@ require_once './controllers/DepositController.php';
     </div>
   </div>
 </div>
-
-<script>
-    $(document).ready(function() {
-        // Intercepta o envio do formulário
-        $('#addDepositForm').submit(function(e) {
-            // Previne o comportamento padrão do formulário (recarregar a página)
-            e.preventDefault();
-
-            // Serializa os dados do formulário
-            var formData = $(this).serialize();
-
-            // Envia os dados via AJAX
-            $.ajax({
-                type: 'POST',
-                url: 'process_deposit.php',
-                data: formData,
-                success: function(response) {
-                    // Manipula a resposta do servidor
-                    console.log(response);
-                    // Aqui você pode adicionar lógica para exibir uma mensagem de sucesso, recarregar a lista de depósitos, etc.
-                },
-                error: function(xhr, status, error) {
-                    // Manipula erros de requisição AJAX
-                    console.error(error);
-                    // Aqui você pode adicionar lógica para exibir uma mensagem de erro ao usuário
-                }
-            });
-        });
-    });
-</script>
